@@ -5,7 +5,7 @@
 ## Packages
 - Palindrome - checks if the value given is palindrome or not
 - Power Formula - One of the science formula. It's used to calculate the power from a given work and time values
-- Stair Case Hacker Rank Solution - prints a staircase of size n.
+- Stair Case (Hacker Rank Solution) - prints a staircase of size n.
 
 ## Installation
 - `go get github.com/MakMoinee/go-mith`
