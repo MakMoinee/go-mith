@@ -41,3 +41,37 @@ func GetListOfPower(pm []PowerModel) []PowerModel {
 	}
 	return result
 }
+
+// GetTransposeTime calculate the time from work and power
+func GetTransposeTime(w float64, p float64) (PowerModel, error) {
+	t := 0.
+	newPowerModel := PowerModel{}
+
+	if w < 0 && p < 0 {
+		return newPowerModel, errors.New("given work or power must be greater than zero")
+	}
+	// time formula is t = w/p
+	t = w / p
+	newPowerModel.Work = w
+	newPowerModel.Power = p
+	newPowerModel.Time = t
+
+	return newPowerModel, nil
+}
+
+// GetTransposeWork calculates the work from the given time and power
+func GetTransposeWork(t float64, p float64) (PowerModel, error) {
+	w := 0.
+	newPowerModel := PowerModel{}
+
+	if t <= 0 && p <= 0 {
+		return newPowerModel, errors.New("given time or power must be greater than zero")
+	}
+
+	// work formula is w=p*t
+	w = p * t
+	newPowerModel.Power = p
+	newPowerModel.Work = w
+	newPowerModel.Time = t
+	return newPowerModel, nil
+}
