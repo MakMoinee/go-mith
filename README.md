@@ -10,7 +10,7 @@
 - `go get github.com/MakMoinee/go-mith`
 
 ## Sample Code
-- `import (
+//import (
 	"fmt"
 
 	"github.com/MakMoinee/go-mith/pkg/palindrome"
@@ -27,4 +27,4 @@ func main() {
 
 	str1 := "aabbaa"
 	fmt.Println(palindrome.IsStringPalindrome(str1)) // it must print true
-}`
+}
