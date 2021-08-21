@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/MakMoinee/go-mith/pkg/manipulate"
 	"github.com/MakMoinee/go-mith/pkg/palindrome"
 )
 
@@ -17,4 +18,7 @@ func main() {
 
 	str1 := "aabbaa"
 	fmt.Println(palindrome.IsStringPalindrome(str1)) // it must print true
+
+	num2 := 7
+	manipulate.GetStairCase(int32(num2))
 }

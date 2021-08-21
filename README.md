@@ -30,3 +30,29 @@ func main() {
 	fmt.Println(palindrome.IsStringPalindrome(str1)) // it must print true
 }
 ```
+
+## Stair Case
+```
+import (
+	"fmt"
+
+	"github.com/MakMoinee/go-mith/pkg/manipulate"
+)
+
+func main() {
+	fmt.Println("Starting main.go")
+
+	num2 := 2
+	manipulate.GetStairCase(int32(num2))
+}
+```
+- Result:
+```
+      #
+     ##
+    ###
+   ####
+  #####
+ ######
+#######
+```
