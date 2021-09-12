@@ -122,7 +122,7 @@ func (c *Service) initShutdownLoops() {
 	}()
 }
 
-func GetService(r *chi.Mux, port string, cert string, key string, tlsEnabled bool) *Service {
+func GetService(r *chi.Mux, port string, cert string, key string, tlsEnabled bool, mInfo map[string]interface{}) *Service {
 	customService := Service{
 		Router:           r,
 		maxOpenFDS:       defaultOpenFDSLimit,
@@ -134,7 +134,7 @@ func GetService(r *chi.Mux, port string, cert string, key string, tlsEnabled boo
 		shutdownHandlers: make([]func(), 0),
 		info: statusInfo{
 			StartupTime: time.Now(),
-			Info:        make(map[string]interface{}),
+			Info:        mInfo,
 		},
 	}
 
