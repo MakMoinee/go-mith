@@ -122,6 +122,25 @@ func (c *Service) initShutdownLoops() {
 	}()
 }
 
+func GetService(r *chi.Mux, port string, cert string, key string, tlsEnabled bool) *Service {
+	customService := Service{
+		Router:           r,
+		maxOpenFDS:       defaultOpenFDSLimit,
+		port:             port,
+		cert:             cert,
+		key:              key,
+		isHealthy:        true,
+		tls:              tlsEnabled,
+		shutdownHandlers: make([]func(), 0),
+		info: statusInfo{
+			StartupTime: time.Now(),
+			Info:        make(map[string]interface{}),
+		},
+	}
+
+	return &customService
+}
+
 func NewService(port string) *Service {
 	// config.Set()
 	// tlsEnabled := config.Registry.GetBool("SERVER_SSL_ENABLED")
