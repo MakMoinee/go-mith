@@ -61,6 +61,8 @@ func main() {
 ## Concurrent Package
 
 ```
+package main
+
 import (
 	"fmt"
 	"sync"
@@ -68,7 +70,8 @@ import (
 	"github.com/MakMoinee/go-mith/pkg/concurrency"
 )
 
-// default concurrent sample
+func main() {
+	// default concurrent sample
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
@@ -87,5 +90,6 @@ import (
 		fmt.Println("[]string >>", data)
 	}()
 	wg.Wait()
+}
 
 ```
