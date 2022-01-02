@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"sync"
 
+	"github.com/MakMoinee/go-mith/pkg/concurrency"
 	"github.com/MakMoinee/go-mith/pkg/manipulate"
 	"github.com/MakMoinee/go-mith/pkg/palindrome"
 )
@@ -28,4 +30,41 @@ func main() {
 	d2, err2 := manipulate.CompareData(2, 2)
 	fmt.Println("CompareData (1,1.0) == " + fmt.Sprintf("%v,%v", d1, err1))
 	fmt.Println("CompareData (2,2) == " + fmt.Sprintf("%v,%v", d2, err2))
+	fmt.Println()
+	fmt.Println()
+
+	// default concurrent sample
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		concurrentService := concurrency.NewService()
+		serviceStruct := concurrentService.GetServiceStruct()
+
+		data1 := concurrency.ProcessItemSliceString(1, []string{"1", "2"}, &serviceStruct)
+		data2 := concurrency.ProcessItemSliceString(2, []string{"1", "2"}, &serviceStruct)
+		// data3 := concurrency.ProcessItemSliceString(3, []string{"1", "2"}, &serviceStruct) //error
+		// fmt.Println(data3)
+		fmt.Println(data1)
+		fmt.Println(data2)
+
+		data4, err := concurrency.ProcessItem(1, []string{"1", "2"}, concurrentService)
+		if err != nil {
+			fmt.Errorf(err.Error())
+		}
+		fmt.Println("[]string >>", data4)
+
+		data5, err := concurrency.ProcessItem(2, []int{1, 2, 3, 4, 5}, concurrentService)
+		if err != nil {
+			fmt.Errorf(err.Error())
+		}
+		fmt.Println("[]int >>> ", data5)
+
+	}()
+	wg.Wait()
+
+}
+
+func processSomething(data interface{}) interface{} {
+	return data
 }

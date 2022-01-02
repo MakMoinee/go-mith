@@ -57,3 +57,35 @@ func main() {
  ######
 #######
 ```
+
+## Concurrent Package
+
+```
+import (
+	"fmt"
+	"sync"
+
+	"github.com/MakMoinee/go-mith/pkg/concurrency"
+)
+
+// default concurrent sample
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+
+		// initialize concurrent service
+		concurrentService := concurrency.NewService()
+
+		// ProcessItem - dynamically process item passed on the function.
+		// Current supported data types are: []string, []int
+		// TODO: int, string
+		data, err := concurrency.ProcessItem(1, []string{"1", "2"}, concurrentService)
+		if err != nil {
+			fmt.Errorf(err.Error())
+		}
+		fmt.Println("[]string >>", data)
+	}()
+	wg.Wait()
+
+```
