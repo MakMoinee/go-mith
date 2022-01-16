@@ -6,6 +6,8 @@
 - Palindrome - checks if the value given is palindrome or not
 - Power Formula - One of the science formula. It's used to calculate the power from a given work and time values
 - Stair Case (Hacker Rank Solution) - prints a staircase of size n.
+- Concurrency Package - useable interface for any concurrent calls.
+- Goserve Package - build http service to start your API with the support of injecting certs and reading config from settings.yaml
 
 ## Installation
 - `go get github.com/MakMoinee/go-mith`
