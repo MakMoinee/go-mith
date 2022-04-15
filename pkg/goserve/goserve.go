@@ -53,6 +53,10 @@ func (c *Service) EnableProfiling(isEnable bool) {
 	c.profilingEnabled = isEnable
 }
 
+func (c *Service) SetInfo(info map[string]interface{}) {
+	c.info.Info = info
+}
+
 func (c *Service) Start() error {
 	c.initShutdownLoops()
 	c.initDefaultEndpoints()

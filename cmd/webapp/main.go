@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/MakMoinee/go-mith/pkg/concurrency"
+	"github.com/MakMoinee/go-mith/pkg/encrypt"
 	"github.com/MakMoinee/go-mith/pkg/manipulate"
 	"github.com/MakMoinee/go-mith/pkg/palindrome"
 )
@@ -32,6 +33,10 @@ func main() {
 	fmt.Println("CompareData (2,2) == " + fmt.Sprintf("%v,%v", d2, err2))
 	fmt.Println()
 	fmt.Println()
+
+	// hashPass, _ := encrypt.HashPassword("admin123")
+	// fmt.Println("Hash Pass", hashPass)
+	fmt.Println("Hash Check:", encrypt.CheckPasswordHash("admin123", "$2a$14$aqNaRmfnkcoM6wD5SfUAlOOJUKGffU2QTKimFWgfLNBG7b0fiXHdq"))
 
 	// default concurrent sample
 	var wg sync.WaitGroup
