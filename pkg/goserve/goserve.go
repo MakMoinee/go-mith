@@ -81,6 +81,7 @@ func (c *Service) initDefaultEndpoints() {
 
 	c.Router.Get("/info", func(w http.ResponseWriter, r *http.Request) {
 		representaion, _ := json.Marshal(c.info)
+		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.Write(representaion)
 	})
 
