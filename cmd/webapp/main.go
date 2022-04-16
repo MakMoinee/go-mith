@@ -7,6 +7,7 @@ import (
 	"github.com/MakMoinee/go-mith/pkg/concurrency"
 	"github.com/MakMoinee/go-mith/pkg/encrypt"
 	"github.com/MakMoinee/go-mith/pkg/manipulate"
+	"github.com/MakMoinee/go-mith/pkg/maps"
 	"github.com/MakMoinee/go-mith/pkg/palindrome"
 )
 
@@ -37,6 +38,15 @@ func main() {
 	// hashPass, _ := encrypt.HashPassword("admin123")
 	// fmt.Println("Hash Pass", hashPass)
 	fmt.Println("Hash Check:", encrypt.CheckPasswordHash("admin123", "$2a$14$aqNaRmfnkcoM6wD5SfUAlOOJUKGffU2QTKimFWgfLNBG7b0fiXHdq"))
+
+	set := make(map[string]string)
+	set["test1a"] = "Wrong Username"
+	set["test2"] = "OK"
+	set["test1b"] = "Wrong Username"
+	set["test1c"] = "OK"
+	set["test3"] = "Runtime Error"
+	groupMap := maps.GroupMapByNumberInKey(set)
+	fmt.Println(fmt.Sprintf("%v", groupMap))
 
 	// default concurrent sample
 	var wg sync.WaitGroup
