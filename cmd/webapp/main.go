@@ -14,6 +14,43 @@ import (
 func main() {
 	fmt.Println("Starting main.go")
 
+	doFilterMapByStringValue()
+	// doFilterMapByNumValue()
+	// doPalindrome()
+	// doStairCase()
+	// doCompareData()
+	// doHashPass()
+	//doHashCheck()
+	// doGroupMap()
+	// doConcurrency()
+}
+
+func doFilterMapByStringValue() {
+	set := make(map[string]string)
+	set["test1"] = "a"
+	set["test2"] = "b"
+
+	maps.FilterStringValueMapStr(set, ">=", "b")
+	fmt.Println(fmt.Sprintf("%v", set))
+}
+
+func doFilterMapByNumValue() {
+	set := make(map[string]int)
+	set["test1"] = 2
+	set["test2"] = 0
+
+	set2 := make(map[string]int)
+	set2["test1"] = 2
+	set2["test2"] = 0
+
+	set = maps.FilterNumValueMap(set, ">", 1)
+	fmt.Println(fmt.Sprintf("%v", set))
+
+	set2 = maps.FilterNumValueMap(set2, ">", 2)
+	fmt.Println(fmt.Sprintf("%v", set2))
+}
+
+func doPalindrome() {
 	// Testing palindrome
 
 	// Pass Palindrome Number
@@ -25,20 +62,32 @@ func main() {
 
 	str2 := "abab"
 	fmt.Println(palindrome.IsStringPalindrome(str2)) // it must print false
+}
 
+func doStairCase() {
 	num2 := 7
 	manipulate.GetStairCase(int32(num2))
+}
+
+func doCompareData() {
 	d1, err1 := manipulate.CompareData(1.10, 1.10)
 	d2, err2 := manipulate.CompareData(2, 2)
 	fmt.Println("CompareData (1,1.0) == " + fmt.Sprintf("%v,%v", d1, err1))
 	fmt.Println("CompareData (2,2) == " + fmt.Sprintf("%v,%v", d2, err2))
 	fmt.Println()
 	fmt.Println()
+}
 
-	// hashPass, _ := encrypt.HashPassword("admin123")
-	// fmt.Println("Hash Pass", hashPass)
+func doHashPass() {
+	hashPass, _ := encrypt.HashPassword("admin123")
+	fmt.Println("Hash Pass", hashPass)
+}
+
+func doHashCheck() {
 	fmt.Println("Hash Check:", encrypt.CheckPasswordHash("admin123", "$2a$14$aqNaRmfnkcoM6wD5SfUAlOOJUKGffU2QTKimFWgfLNBG7b0fiXHdq"))
+}
 
+func doGroupMap() {
 	set := make(map[string]string)
 	set["test1a"] = "Wrong Username"
 	set["test2"] = "OK"
@@ -47,7 +96,8 @@ func main() {
 	set["test3"] = "Runtime Error"
 	groupMap := maps.GroupMapByNumberInKey(set)
 	fmt.Println(fmt.Sprintf("%v", groupMap))
-
+}
+func doConcurrency() {
 	// default concurrent sample
 	var wg sync.WaitGroup
 	wg.Add(1)
@@ -77,7 +127,6 @@ func main() {
 
 	}()
 	wg.Wait()
-
 }
 
 func processSomething(data interface{}) interface{} {
