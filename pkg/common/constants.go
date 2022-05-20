@@ -4,6 +4,11 @@ import (
 	"reflect"
 )
 
+const (
+	ContentTypeKey   = "Content-Type"
+	ContentTypeValue = "application/json; charset=UTF-8"
+)
+
 var (
 	SLICE_STRING []string
 	SLICE_INT    []int
