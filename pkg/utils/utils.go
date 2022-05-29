@@ -1,7 +1,15 @@
 package utils
 
-import "fmt"
+type Number interface {
+	int | float32 | float64 | int32 | int16 | int8
+}
 
-func ValidField[T ~int | ~string | ~[]int | ~[]string](t T) {
-	fmt.Println(fmt.Sprintf("%T", t))
+func SumNumber[T Number](t []T) T {
+	var total T
+
+	for _, data := range t {
+		total += data
+	}
+
+	return total
 }

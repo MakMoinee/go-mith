@@ -25,9 +25,7 @@ func main() {
 	// doGroupMap()
 	// doConcurrency()
 
-	utils.ValidField("Hello World")
-	utils.ValidField(1)
-	utils.ValidField([]string{"asdasd", "asdsad"})
+	fmt.Println(utils.SumNumber([]int{1, 2, 3, 4}))
 }
 
 func doFilterMapByStringValue() {
