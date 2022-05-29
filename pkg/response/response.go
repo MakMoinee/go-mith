@@ -31,6 +31,19 @@ func (svc *SuccessResponse) IsError() bool {
 	return false
 }
 
+func NewErrorBuilder(msg string, status int) ValidResponse {
+	svc := ErrorResponse{}
+	svc.ErrorMessage = msg
+	svc.ErrorStatus = http.StatusInternalServerError
+	return &svc
+}
+
+func NewSuccessBuilder(msg string) ValidResponse {
+	svc := SuccessResponse{}
+	svc.Message = msg
+	return &svc
+}
+
 // Success() - returns success response
 func Success(w http.ResponseWriter, payload interface{}) {
 	result, err := json.Marshal(payload)
