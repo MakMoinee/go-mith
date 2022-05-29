@@ -11,10 +11,24 @@ type ErrorResponse struct {
 	ErrorStatus  int    `json:"errorStatus"`
 	ErrorMessage string `json:"errorMessage"`
 }
+type SuccessResponse struct {
+	Message string `json:"message"`
+}
 
 type ValidResponse interface {
 	ErrorResponse | interface{}
 	IsError() bool
+}
+
+func (svc *ErrorResponse) IsError() bool {
+	if len(svc.ErrorMessage) > 0 {
+		return true
+	}
+	return true
+}
+
+func (svc *SuccessResponse) IsError() bool {
+	return false
 }
 
 // Success() - returns success response
