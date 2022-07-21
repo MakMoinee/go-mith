@@ -8,6 +8,7 @@ import (
 	"github.com/MakMoinee/go-mith/pkg/encrypt"
 	"github.com/MakMoinee/go-mith/pkg/manipulate"
 	"github.com/MakMoinee/go-mith/pkg/maps"
+	"github.com/MakMoinee/go-mith/pkg/number"
 	"github.com/MakMoinee/go-mith/pkg/palindrome"
 	"github.com/MakMoinee/go-mith/pkg/utils"
 )
@@ -26,6 +27,7 @@ func main() {
 	// doConcurrency()
 
 	fmt.Println(utils.SumNumber([]int{1, 2, 3, 4}))
+	fmt.Println(number.IsConsecutiveNumber([]int{1, 2, 3, 5}))
 }
 
 func doFilterMapByStringValue() {
