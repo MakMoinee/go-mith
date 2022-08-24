@@ -15,8 +15,8 @@ type ConcurrentService struct {
 
 type IConcurrent interface {
 	ProcessSomething(interface{}) (interface{}, int, error)
-	ProcessConcurrentlySliceInt(item []int, occurances int, myFunc func(i int, end int, wg *sync.WaitGroup, item []int, resultChan chan []int, errChan chan error)) ([]int, []error)
-	ProcessConcurrentlySliceStr(item []string, occurances int, myFunc func(i int, end int, wg *sync.WaitGroup, item []string, resultChan chan []string, errChan chan error)) ([]string, []error)
+	ProcessConcurrentlySliceInt(item []int, occurrences int, myFunc func(i int, end int, wg *sync.WaitGroup, item []int, resultChan chan []int, errChan chan error)) ([]int, []error)
+	ProcessConcurrentlySliceStr(item []string, occurrences int, myFunc func(i int, end int, wg *sync.WaitGroup, item []string, resultChan chan []string, errChan chan error)) ([]string, []error)
 	GetServiceStruct() ConcurrentService
 }
 
@@ -27,26 +27,26 @@ func NewService() IConcurrent {
 }
 
 // ProcessItem process slice of string
-func ProcessItemSliceString(occurances int, item []string, svc *ConcurrentService) []string {
-	if occurances <= 0 {
+func ProcessItemSliceString(occurrences int, item []string, svc *ConcurrentService) []string {
+	if occurrences <= 0 {
 		panic("Occurance/s must not be zero")
 	} else if len(item) <= 0 {
 		panic("Item must not be empty")
-	} else if len(item) < occurances {
+	} else if len(item) < occurrences {
 		panic("Item must not be less than occurance/s")
 	}
 
 	var result []string
-	noOfCalls := len(item) / occurances
+	noOfCalls := len(item) / occurrences
 	itemLength := len(item)
 	errChan := make(chan error, noOfCalls)
 	resultChan := make(chan []string, noOfCalls)
 	end := itemLength
 	var wg sync.WaitGroup
 
-	for i := 0; i < occurances; i = i + occurances {
-		if itemLength > occurances {
-			end = occurances
+	for i := 0; i < occurrences; i = i + occurrences {
+		if itemLength > occurrences {
+			end = occurrences
 		}
 		wg.Add(1)
 		go func(i, end int) {
@@ -63,7 +63,7 @@ func ProcessItemSliceString(occurances int, item []string, svc *ConcurrentServic
 
 			errChan <- err
 		}(i, end)
-		end = end + occurances
+		end = end + occurrences
 	}
 	wg.Wait()
 	close(resultChan)
@@ -77,7 +77,7 @@ func ProcessItemSliceString(occurances int, item []string, svc *ConcurrentServic
 	return result
 }
 
-func ProcessItem(occurances int, item interface{}, svc IConcurrent) (interface{}, error) {
+func ProcessItem(occurrences int, item interface{}, svc IConcurrent) (interface{}, error) {
 	var result interface{}
 	var err []error
 	flag := 0
@@ -107,24 +107,24 @@ func ProcessItem(occurances int, item interface{}, svc IConcurrent) (interface{}
 
 	resultSliceInt, resultSliceString, resultInt, resultString := common.GetData(flag)
 
-	if occurances <= 0 {
+	if occurrences <= 0 {
 		panic("Occurance/s must not be zero")
 	} else {
 		if len(resultSliceInt) == 0 && len(resultSliceString) == 0 && resultInt == 0 && len(strings.TrimSpace(resultString)) == 0 {
 			panic("Item is empty")
-		} else if len(resultSliceInt) < occurances && len(resultSliceString) < occurances && resultInt < occurances && len(resultString) < occurances {
+		} else if len(resultSliceInt) < occurrences && len(resultSliceString) < occurrences && resultInt < occurrences && len(resultString) < occurrences {
 			panic("Item must not be less than occurance/s >>" + fmt.Sprintf("%v %v %v %v", len(resultSliceInt), len(resultSliceString), resultInt, len(resultString)))
 		}
 	}
 
 	switch flag {
 	case 1:
-		result, err = svc.ProcessConcurrentlySliceInt(resultSliceInt, occurances, processItemSliceInt)
+		result, err = svc.ProcessConcurrentlySliceInt(resultSliceInt, occurrences, processItemSliceInt)
 		if err != nil {
 			return nil, err[0]
 		}
 	case 2:
-		result, err = svc.ProcessConcurrentlySliceStr(resultSliceString, occurances, processItemSliceString)
+		result, err = svc.ProcessConcurrentlySliceStr(resultSliceString, occurrences, processItemSliceString)
 		if err != nil {
 			return nil, err[0]
 		}
@@ -158,23 +158,23 @@ func (svc *ConcurrentService) GetServiceStruct() ConcurrentService {
 }
 
 // ProcessConcurrentlySliceInt process []int data types concurrently with the predefined function
-func (svc *ConcurrentService) ProcessConcurrentlySliceInt(item []int, occurances int, myFunc func(i int, end int, wg *sync.WaitGroup, item []int, resultChan chan []int, errChan chan error)) ([]int, []error) {
+func (svc *ConcurrentService) ProcessConcurrentlySliceInt(item []int, occurrences int, myFunc func(i int, end int, wg *sync.WaitGroup, item []int, resultChan chan []int, errChan chan error)) ([]int, []error) {
 	var result []int
 	var err []error
-	noOfCalls := len(item) / occurances
+	noOfCalls := len(item) / occurrences
 	itemLength := len(item)
 	errChan := make(chan error, noOfCalls)
 	resultChan := make(chan []int, noOfCalls)
 	end := itemLength
 	var wg sync.WaitGroup
 
-	for i := 0; i < occurances; i = i + occurances {
-		if itemLength > occurances {
-			end = occurances
+	for i := 0; i < occurrences; i = i + occurrences {
+		if itemLength > occurrences {
+			end = occurrences
 		}
 		wg.Add(1)
 		go myFunc(i, end, &wg, item, resultChan, errChan)
-		end = end + occurances
+		end = end + occurrences
 	}
 	wg.Wait()
 	close(resultChan)
@@ -196,23 +196,23 @@ func (svc *ConcurrentService) ProcessConcurrentlySliceInt(item []int, occurances
 }
 
 // ProcessConcurrentlySliceStr process []string data types
-func (svc *ConcurrentService) ProcessConcurrentlySliceStr(item []string, occurances int, myFunc func(i int, end int, wg *sync.WaitGroup, item []string, resultChan chan []string, errChan chan error)) ([]string, []error) {
+func (svc *ConcurrentService) ProcessConcurrentlySliceStr(item []string, occurrences int, myFunc func(i int, end int, wg *sync.WaitGroup, item []string, resultChan chan []string, errChan chan error)) ([]string, []error) {
 	var result []string
 	var err []error
-	noOfCalls := len(item) / occurances
+	noOfCalls := len(item) / occurrences
 	itemLength := len(item)
 	errChan := make(chan error, noOfCalls)
 	resultChan := make(chan []string, noOfCalls)
 	end := itemLength
 	var wg sync.WaitGroup
 
-	for i := 0; i < occurances; i = i + occurances {
-		if itemLength > occurances {
-			end = occurances
+	for i := 0; i < occurrences; i = i + occurrences {
+		if itemLength > occurrences {
+			end = occurrences
 		}
 		wg.Add(1)
 		go myFunc(i, end, &wg, item, resultChan, errChan)
-		end = end + occurances
+		end = end + occurrences
 	}
 	wg.Wait()
 	close(resultChan)
