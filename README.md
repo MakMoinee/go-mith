@@ -1,4 +1,4 @@
-# Go-Mith ![CI](https://github.com/MakMoinee/go-mith/workflows/CI/badge.svg) [![Go Report Card](https://goreportcard.com/badge/github.com/MakMoinee/go-mith)](https://goreportcard.com/report/github.com/MakMoinee/go-mith)
+# Go-Mith [![Go Report Card](https://goreportcard.com/badge/github.com/MakMoinee/go-mith)](https://goreportcard.com/report/github.com/MakMoinee/go-mith)
 
 # go-mith
 ## Features
