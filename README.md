@@ -14,7 +14,7 @@
 - `go get github.com/MakMoinee/go-mith`
 
 ## Sample Code
-```
+```go
 import (
 	"fmt"
 
@@ -36,7 +36,7 @@ func main() {
 ```
 
 ## Stair Case
-```
+```go
 import (
 	"fmt"
 
@@ -63,7 +63,7 @@ func main() {
 
 ## Concurrent Package
 
-```
+```go
 package main
 
 import (
@@ -109,8 +109,6 @@ import (
 )
 
 func main() {
-
-	config.Set()
 	httpService := goserve.NewService(SERVER_PORT)
 	httpService.EnableProfiling(SERVER_ENABLE_PROFILING)
 	log.Println("Server Starting in Port ", SERVER_PORT)
