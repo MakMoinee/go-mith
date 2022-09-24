@@ -99,7 +99,7 @@ func main() {
 
 ## goserve package
 
-```
+```go
 package main
 
 import (
