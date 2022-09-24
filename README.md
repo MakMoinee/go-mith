@@ -96,3 +96,26 @@ func main() {
 }
 
 ```
+
+## goserve package
+
+```
+package main
+
+import (
+	"log"
+
+	"github.com/MakMoinee/go-mith/pkg/goserve"
+)
+
+func main() {
+
+	config.Set()
+	httpService := goserve.NewService(SERVER_PORT)
+	httpService.EnableProfiling(SERVER_ENABLE_PROFILING)
+	log.Println("Server Starting in Port ", SERVER_PORT)
+	if err := httpService.Start(); err != nil {
+		panic(err)
+	}
+}
+```
