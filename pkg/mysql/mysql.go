@@ -13,11 +13,12 @@ type service struct {
 	ConnectionString string
 	Db               *sql.DB
 	DbDriver         string
+	maxConn          int
 }
 
 type GoMithMysql interface {
 	GetDBConnection() *sql.DB
-	SetConnectionString(conn string)
+	SetConnectionString(conn string, maxConn int)
 }
 
 func NewGoMithMysql(dbName, dbServer, dbUser, dbPassword, dbDriver string) GoMithMysql {
@@ -31,9 +32,11 @@ func (s *service) GetDBConnection() *sql.DB {
 	if err != nil {
 		log.Println(err.Error())
 	}
+	db.SetMaxOpenConns(s.maxConn)
 	return db
 }
 
-func (s *service) SetConnectionString(conn string) {
+func (s *service) SetConnectionString(conn string, maxConn int) {
 	s.ConnectionString = conn
+	s.maxConn = maxConn
 }
