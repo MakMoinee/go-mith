@@ -32,3 +32,7 @@ func (s *service) GetDBConnection() *sql.DB {
 	}
 	return db
 }
+
+func (s *service) SetConnectionString(conn string) {
+	s.ConnectionString = conn
+}
