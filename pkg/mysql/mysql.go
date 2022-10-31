@@ -22,7 +22,7 @@ type GoMithMysql interface {
 
 func NewGoMithMysql(dbName, dbServer, dbUser, dbPassword, dbDriver string) GoMithMysql {
 	svc := service{}
-
+	svc.DbDriver = dbDriver
 	return &svc
 }
 
