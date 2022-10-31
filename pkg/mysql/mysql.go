@@ -17,6 +17,7 @@ type service struct {
 
 type GoMithMysql interface {
 	GetDBConnection() *sql.DB
+	SetConnectionString(conn string)
 }
 
 func NewGoMithMysql(dbName, dbServer, dbUser, dbPassword, dbDriver string) GoMithMysql {
