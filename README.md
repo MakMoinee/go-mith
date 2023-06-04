@@ -9,6 +9,7 @@
 - Stair Case (Hacker Rank Solution) - prints a staircase of size n.
 - Concurrency Package - useable interface for any concurrent calls.
 - Goserve Package - build http service to start your API with the support of injecting certs and reading config from settings.yaml
+- Email - send email by using our prebuilt function, no need to code manually for email just instantiate the package and pass the required paramaters and it should work
 
 ## Installation
 - `go get github.com/MakMoinee/go-mith`
@@ -114,6 +115,34 @@ func main() {
 	log.Println("Server Starting in Port ", SERVER_PORT)
 	if err := httpService.Start(); err != nil {
 		panic(err)
+	}
+}
+```
+
+
+## email package
+
+```go
+package main
+
+import (
+	"log"
+
+	"github.com/MakMoinee/go-mith/pkg/email"
+)
+
+func main() {
+	emailService := email.NewEmailService(587, "emailHost", "emailAddress", "emailAppPass")
+
+	isEmailSent, err := emailService.SendEmail("receiverEmail", "emailSubject", "emailMessage")
+	if err != nil {
+		log.Fatalf("Error sending email: %s", err)
+	}
+
+	if isEmailSent {
+		log.Println("Email Send Successfully")
+	} else {
+		log.Println("Failed to send email")
 	}
 }
 ```
