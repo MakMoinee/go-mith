@@ -29,11 +29,11 @@ func NewService() IConcurrent {
 // ProcessItem process slice of string
 func ProcessItemSliceString(occurrences int, item []string, svc *ConcurrentService) []string {
 	if occurrences <= 0 {
-		panic("Occurance/s must not be zero")
+		panic("Occurrence/s must not be zero")
 	} else if len(item) <= 0 {
 		panic("Item must not be empty")
 	} else if len(item) < occurrences {
-		panic("Item must not be less than occurance/s")
+		panic("Item must not be less than Occurrence/s")
 	}
 
 	var result []string
@@ -108,12 +108,12 @@ func ProcessItem(occurrences int, item interface{}, svc IConcurrent) (interface{
 	resultSliceInt, resultSliceString, resultInt, resultString := common.GetData(flag)
 
 	if occurrences <= 0 {
-		panic("Occurance/s must not be zero")
+		panic("Occurrence/s must not be zero")
 	} else {
 		if len(resultSliceInt) == 0 && len(resultSliceString) == 0 && resultInt == 0 && len(strings.TrimSpace(resultString)) == 0 {
 			panic("Item is empty")
 		} else if len(resultSliceInt) < occurrences && len(resultSliceString) < occurrences && resultInt < occurrences && len(resultString) < occurrences {
-			panic("Item must not be less than occurance/s >>" + fmt.Sprintf("%v %v %v %v", len(resultSliceInt), len(resultSliceString), resultInt, len(resultString)))
+			panic("Item must not be less than Occurrence/s >>" + fmt.Sprintf("%v %v %v %v", len(resultSliceInt), len(resultSliceString), resultInt, len(resultString)))
 		}
 	}
 
