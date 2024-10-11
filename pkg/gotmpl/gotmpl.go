@@ -48,7 +48,7 @@ func (vs *viewService) Render(w http.ResponseWriter, data interface{}) error {
 }
 
 func layoutFiles(layoutDir string) []string {
-	files, err := filepath.Glob(layoutDir + "/*.gohtml")
+	files, err := filepath.Glob(layoutDir + "/*.html")
 	if err != nil {
 		panic(err)
 	}
