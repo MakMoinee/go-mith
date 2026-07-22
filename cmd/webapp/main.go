@@ -105,9 +105,7 @@ func doGroupMap() {
 func doConcurrency() {
 	// default concurrent sample
 	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
+	wg.Go(func() {
 		concurrentService := concurrency.NewService()
 		serviceStruct := concurrentService.GetServiceStruct()
 		_ = serviceStruct
@@ -130,10 +128,10 @@ func doConcurrency() {
 		// 	}
 		// 	fmt.Println("[]int >>> ", data5)
 
-	}()
+	})
 	wg.Wait()
 }
 
-func processSomething(data interface{}) interface{} {
+func processSomething(data any) any {
 	return data
 }

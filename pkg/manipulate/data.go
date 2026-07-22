@@ -3,7 +3,7 @@ package manipulate
 import "errors"
 
 // CompareData compares data if its same
-func CompareData(data interface{}, desiredDataType interface{}) (bool, error) {
+func CompareData(data any, desiredDataType any) (bool, error) {
 	initialType := 0
 	finalType := 0
 

@@ -42,7 +42,7 @@ type Service struct {
 type statusInfo struct {
 	StartupTime time.Time
 	mu          sync.Mutex
-	Info        map[string]interface{}
+	Info        map[string]any
 }
 
 func (c *Service) SetGlobalMetrics(handler http.Handler) {
@@ -53,7 +53,7 @@ func (c *Service) EnableProfiling(isEnable bool) {
 	c.profilingEnabled = isEnable
 }
 
-func (c *Service) SetInfo(info map[string]interface{}) {
+func (c *Service) SetInfo(info map[string]any) {
 	c.info.Info = info
 }
 
@@ -127,7 +127,7 @@ func (c *Service) initShutdownLoops() {
 	}()
 }
 
-func GetService(r *chi.Mux, port string, cert string, key string, tlsEnabled bool, mInfo map[string]interface{}) *Service {
+func GetService(r *chi.Mux, port string, cert string, key string, tlsEnabled bool, mInfo map[string]any) *Service {
 	customService := Service{
 		Router:           r,
 		maxOpenFDS:       defaultOpenFDSLimit,
@@ -146,6 +146,7 @@ func GetService(r *chi.Mux, port string, cert string, key string, tlsEnabled boo
 	return &customService
 }
 
+//go:fix
 func NewService(port string) *Service {
 	// config.Set()
 	// tlsEnabled := config.Registry.GetBool("SERVER_SSL_ENABLED")
@@ -165,7 +166,7 @@ func NewService(port string) *Service {
 		shutdownHandlers: make([]func(), 0),
 		info: statusInfo{
 			StartupTime: time.Now(),
-			Info:        make(map[string]interface{}),
+			Info:        make(map[string]any),
 		},
 	}
 

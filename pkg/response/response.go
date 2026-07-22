@@ -16,7 +16,7 @@ type SuccessResponse struct {
 }
 
 type ValidResponse interface {
-	ErrorResponse | interface{}
+	ErrorResponse | any
 	IsError() bool
 }
 
@@ -45,7 +45,7 @@ func NewSuccessBuilder(msg string) ValidResponse {
 }
 
 // Success() - returns success response
-func Success(w http.ResponseWriter, payload interface{}) {
+func Success(w http.ResponseWriter, payload any) {
 	result, err := json.Marshal(payload)
 	if err != nil {
 		errorBuilder := ErrorResponse{}

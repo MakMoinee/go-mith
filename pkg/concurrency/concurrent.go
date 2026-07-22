@@ -14,7 +14,7 @@ type ConcurrentService struct {
 }
 
 type IConcurrent interface {
-	ProcessSomething(interface{}) (interface{}, int, error)
+	ProcessSomething(any) (any, int, error)
 	ProcessConcurrentlySliceInt(item []int, occurrences int, myFunc func(i int, end int, wg *sync.WaitGroup, item []int, resultChan chan []int, errChan chan error)) ([]int, []error)
 	ProcessConcurrentlySliceStr(item []string, occurrences int, myFunc func(i int, end int, wg *sync.WaitGroup, item []string, resultChan chan []string, errChan chan error)) ([]string, []error)
 	GetServiceStruct() ConcurrentService
@@ -77,8 +77,8 @@ func ProcessItemSliceString(occurrences int, item []string, svc *ConcurrentServi
 	return result
 }
 
-func ProcessItem(occurrences int, item interface{}, svc IConcurrent) (interface{}, error) {
-	var result interface{}
+func ProcessItem(occurrences int, item any, svc IConcurrent) (any, error) {
+	var result any
 	var err []error
 	flag := 0
 	//initialize maps
@@ -140,7 +140,7 @@ func ProcessItem(occurrences int, item interface{}, svc IConcurrent) (interface{
 // ProcessSomething process the data to be used by the concurrency call.
 //
 // It can be overridden by initializing new ConcurrentService Struct
-func (svc *ConcurrentService) ProcessSomething(data interface{}) (interface{}, int, error) {
+func (svc *ConcurrentService) ProcessSomething(data any) (any, int, error) {
 
 	switch t := data.(type) {
 	case []string:

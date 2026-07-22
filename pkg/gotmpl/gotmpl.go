@@ -12,8 +12,8 @@ type viewService struct {
 }
 
 type IView interface {
-	RenderWithTemplate(w http.ResponseWriter, data interface{}) error
-	Render(w http.ResponseWriter, data interface{}) error
+	RenderWithTemplate(w http.ResponseWriter, data any) error
+	Render(w http.ResponseWriter, data any) error
 }
 
 func NewView(layoutDir string) IView {
@@ -40,10 +40,10 @@ func NewViewWithTemplate(layout string, layoutDir string, files ...string) IView
 	return &svc
 
 }
-func (vs *viewService) RenderWithTemplate(w http.ResponseWriter, data interface{}) error {
+func (vs *viewService) RenderWithTemplate(w http.ResponseWriter, data any) error {
 	return vs.Template.ExecuteTemplate(w, vs.Layout, data)
 }
-func (vs *viewService) Render(w http.ResponseWriter, data interface{}) error {
+func (vs *viewService) Render(w http.ResponseWriter, data any) error {
 	return vs.Template.Execute(w, data)
 }
 

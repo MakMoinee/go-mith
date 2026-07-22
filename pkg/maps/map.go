@@ -51,7 +51,7 @@ func isPopulated(key string, group map[int][]string) (bool, int) {
 	total := len(group)
 	itContains := false
 	if total > 0 {
-		for i := 0; i < total; i++ {
+		for i := range total {
 			contains := strings.Contains(key, fmt.Sprintf("%v", i+1))
 			if contains {
 				group[i+1] = append(group[i+1], key)
