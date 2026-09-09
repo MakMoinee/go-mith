@@ -35,7 +35,7 @@ func GetListOfPower(pm []PowerModel) []PowerModel {
 	for _, val := range pm {
 		calculateResult, err := GetResultingPower(val.Work, val.Time)
 		if err != nil {
-			log.Fatalf()
+			log.Fatal(err.Error())
 		}
 		result = append(result, calculateResult)
 	}
