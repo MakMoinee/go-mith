@@ -6,7 +6,7 @@ Consolidates useful formulas for starters of golang programming
 
 [![Documentation](https://img.shields.io/badge/go.dev-documentation-007d9c?&style=for-the-badge)](https://pkg.go.dev/github.com/MakMoinee/go-mith)
 [![Latest Version](https://img.shields.io/github/tag/MakMoinee/go-mith.svg?&style=for-the-badge&label=semver)](https://github.com/MakMoinee/go-mith/releases)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/MakMoinee/go-mith/ci.yml?style=for-the-badge&branch=main)](https://github.com/MakMoinee/go-mith/actions/workflows/ci.yml)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/MakMoinee/go-mith/go.yml?style=for-the-badge&branch=main)](https://github.com/MakMoinee/go-mith/actions/workflows/go.yml)
 [![Code Coverage](https://img.shields.io/codecov/c/github/MakMoinee/go-mith/main.svg?style=for-the-badge)](https://codecov.io/github/MakMoinee/go-mith)
 
 </div>
