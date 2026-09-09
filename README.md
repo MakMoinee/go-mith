@@ -10,6 +10,7 @@
 - Concurrency Package - useable interface for any concurrent calls.
 - Goserve Package - build http service to start your API with the support of injecting certs and reading config from settings.yaml
 - Email - send email by using our prebuilt function, no need to code manually for email just instantiate the package and pass the required paramaters and it should work
+- MithClientRest - a small, payload-driven REST client. You map each request payload type to an HTTP method and path through an OperationResolver, then just call Do/Exec - marshalling, headers, timeouts and error parsing are handled for you
 
 ## Installation
 - `go get github.com/MakMoinee/go-mith`
@@ -146,3 +147,108 @@ func main() {
 	}
 }
 ```
+
+
+## mithclientrest package
+
+A lightweight REST client where the request payload itself decides which
+operation is called. Implement an `OperationResolver` once, then send any
+payload with `Do` (returns the raw response body) or `Exec` (discards it).
+
+```go
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"log"
+	"net/http"
+	"time"
+
+	"github.com/MakMoinee/go-mith/pkg/mithclientrest"
+)
+
+// Payloads
+type CreateUserRequest struct {
+	Name  string `json:"name"`
+	Email string `json:"email"`
+}
+
+type DeleteUserRequest struct {
+	ID string `json:"id"`
+}
+
+// Resolver maps a payload type to an HTTP method and path.
+type Resolver struct{}
+
+func (Resolver) OperationFor(payload any) (mithclientrest.Operation, error) {
+	switch payload.(type) {
+	case CreateUserRequest:
+		return mithclientrest.Operation{
+			Method: http.MethodPost,
+			Path:   "/users",
+		}, nil
+	case DeleteUserRequest:
+		return mithclientrest.Operation{
+			Method:  http.MethodDelete,
+			Path:    "/users",
+			Headers: map[string]string{"X-Confirm": "true"}, // per-operation headers
+		}, nil
+	default:
+		return mithclientrest.Operation{}, fmt.Errorf("unsupported payload %T", payload)
+	}
+}
+
+func main() {
+	client := mithclientrest.New(&mithclientrest.Config{
+		BaseURL: "https://api.example.com",
+		Headers: map[string]string{
+			"Authorization": "Bearer <token>",
+		},
+		Timeout:           10 * time.Second, // defaults to 30s when omitted
+		OperationResolver: Resolver{},
+		// HTTPClient: &http.Client{}, // optional, supply your own client
+	})
+
+	ctx := context.Background()
+
+	// Do - returns the raw response body
+	body, err := client.Do(ctx, CreateUserRequest{
+		Name:  "Juan Dela Cruz",
+		Email: "juan@example.com",
+	})
+	if err != nil {
+		// Non 2xx responses come back as *mithclientrest.Fault
+		var fault *mithclientrest.Fault
+		if errors.As(err, &fault) {
+			log.Fatalf("status=%d message=%s body=%s",
+				fault.StatusCode, fault.Message, string(fault.Body))
+		}
+		log.Fatalf("request failed: %v", err)
+	}
+
+	var created struct {
+		ID string `json:"id"`
+	}
+	if err := json.Unmarshal(body, &created); err != nil {
+		log.Fatalf("decode response: %v", err)
+	}
+	log.Println("created user:", created.ID)
+
+	// Exec - when the response body is not needed
+	if err := client.Exec(ctx, DeleteUserRequest{ID: created.ID}); err != nil {
+		log.Fatalf("delete failed: %v", err)
+	}
+	log.Println("user deleted")
+}
+```
+
+### Notes
+- `Content-Type: application/json` is always set; `Config.Headers` are applied
+  next and `Operation.Headers` last, so an operation can override a global header.
+- Every payload is JSON-encoded and sent as the request body.
+- Any response outside the 2xx range returns a `*mithclientrest.Fault` carrying
+  the status code, the raw body, and a message extracted from a `message` or
+  `error` JSON field when present.
