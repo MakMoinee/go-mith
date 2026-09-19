@@ -1,3 +1,5 @@
+package idemstore
+
 import (
 	"context"
 	"crypto/sha256"
