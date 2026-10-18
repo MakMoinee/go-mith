@@ -39,7 +39,7 @@ func (svc *mithAuthService) GetToken(username string) (string, error) {
 	svc.username = username
 	claims := svc.getClaims()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(svc.ServerSecret)
+	tokenString, err := token.SignedString([]byte(svc.ServerSecret))
 	if err == nil {
 		svc.TokenMapping[tokenString] = &claims
 	}
@@ -72,7 +72,7 @@ func (svc *mithAuthService) IsClaimsSubjectEmpty(tokenString string) bool {
 }
 
 func (svc *mithAuthService) getServerSecret(token *jwt.Token) (any, error) {
-	return svc.ServerSecret, nil
+	return []byte(svc.ServerSecret), nil
 }
 
 func (svc *mithAuthService) parseWithClaims(tokenString string) (*jwt.Token, error) {
