@@ -14,29 +14,29 @@ type MithAuthClaims struct {
 
 type mithAuthService struct {
 	contextKey   string
-	Username     string
+	username     string
 	ServerIssuer string
 	ServerSecret string
 	TokenMapping map[string]*MithAuthClaims
 }
 
 type MithAuthService interface {
-	GetToken() (string, error)
+	GetToken(string) (string, error)
 	ValidateToken(string) bool
 	AuthMiddleware(next http.Handler) http.Handler
 }
 
-func NewMithAuthService(contextKey, username, serverIssuer, serverSecret string) MithAuthService {
+func NewMithAuthService(contextKey, serverIssuer, serverSecret string) MithAuthService {
 	return &mithAuthService{
 		contextKey:   contextKey,
-		Username:     username,
 		ServerIssuer: serverIssuer,
 		ServerSecret: serverSecret,
 		TokenMapping: make(map[string]*MithAuthClaims),
 	}
 }
 
-func (svc *mithAuthService) GetToken() (string, error) {
+func (svc *mithAuthService) GetToken(username string) (string, error) {
+	svc.username = username
 	claims := svc.getClaims()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString(svc.ServerSecret)
@@ -50,7 +50,7 @@ func (svc *mithAuthService) getClaims() MithAuthClaims {
 	now := time.Now()
 	return MithAuthClaims{
 		RegisteredClaims: jwt.RegisteredClaims{
-			Subject:   svc.Username,
+			Subject:   svc.username,
 			Issuer:    svc.ServerIssuer,
 			IssuedAt:  jwt.NewNumericDate(now),
 			ExpiresAt: jwt.NewNumericDate(now.Add(15 * time.Minute)),
