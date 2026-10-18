@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go/firestore v1.9.0
 	firebase.google.com/go v3.13.0+incompatible
 	github.com/go-chi/chi/v5 v5.0.8
+	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/redis/go-redis/v9 v9.22.0
 	github.com/spf13/viper v1.21.0
 	golang.org/x/crypto v0.9.0
