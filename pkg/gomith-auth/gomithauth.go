@@ -2,6 +2,7 @@ package gomithauth
 
 import (
 	"errors"
+	"net/http"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -12,6 +13,7 @@ type MithAuthClaims struct {
 }
 
 type mithAuthService struct {
+	contextKey   string
 	Username     string
 	ServerIssuer string
 	ServerSecret string
@@ -21,13 +23,16 @@ type mithAuthService struct {
 type MithAuthService interface {
 	GetToken() (string, error)
 	ValidateToken(string) bool
+	AuthMiddleware(next http.Handler) http.Handler
 }
 
-func NewMithAuthService(username, serverIssuer, serverSecret string) MithAuthService {
+func NewMithAuthService(contextKey, username, serverIssuer, serverSecret string) MithAuthService {
 	return &mithAuthService{
+		contextKey:   contextKey,
 		Username:     username,
 		ServerIssuer: serverIssuer,
 		ServerSecret: serverSecret,
+		TokenMapping: make(map[string]*MithAuthClaims),
 	}
 }
 
@@ -103,4 +108,8 @@ func (svc *mithAuthService) ValidateToken(tokenString string) bool {
 	}
 
 	return isValid
+}
+
+func (svc *mithAuthService) getClaimsWithToken(tokenString string) *MithAuthClaims {
+	return svc.TokenMapping[tokenString]
 }
