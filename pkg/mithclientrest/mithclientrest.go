@@ -51,6 +51,56 @@ func New(c *Config) *Client {
 // the provided payload.
 func (c *Client) Do(
 	ctx context.Context,
+	schema any,
+) ([]byte, error) {
+	operation, err := c.config.OperationResolver.OperationFor(schema)
+	if err != nil {
+		return nil, err
+	}
+	url := c.config.BaseURL + operation.Path
+
+	req, err := http.NewRequestWithContext(
+		ctx,
+		operation.Method,
+		url,
+		nil,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("create request: %w", err)
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+
+	for key, value := range c.config.Headers {
+		req.Header.Set(key, value)
+	}
+
+	for key, value := range operation.Headers {
+		req.Header.Set(key, value)
+	}
+
+	resp, err := c.config.HTTPClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("execute request: %w", err)
+	}
+
+	defer resp.Body.Close()
+
+	responseBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("read response: %w", err)
+	}
+
+	if resp.StatusCode < http.StatusOK ||
+		resp.StatusCode >= http.StatusMultipleChoices {
+		return nil, parseFault(resp.StatusCode, responseBody)
+	}
+
+	return responseBody, nil
+}
+
+func (c *Client) DoWithBody(
+	ctx context.Context,
 	payload any,
 ) ([]byte, error) {
 	operation, err := c.config.OperationResolver.OperationFor(payload)
